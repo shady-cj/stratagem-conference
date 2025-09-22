@@ -1,7 +1,7 @@
 import qrcode
 
 # The website link you want to encode
-url = "https://google.com"
+url = "https://reeea-a-program-agenda.netlify.app/"
 
 # Create and configure the QRCode object
 qr = qrcode.QRCode(
