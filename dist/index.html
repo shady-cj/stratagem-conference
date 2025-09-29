@@ -21,6 +21,23 @@
             background: linear-gradient(135deg, rgba(62,206,65, 0.2) 0%,rgba(53,207,53, 0.2) 50%, rgba(2,156,50, 0.2) 100%);
             min-height: 100vh;
         }
+        .save-pdf-container {
+            width: 100%;
+            text-align: center;
+            padding-top: 1.2rem;  
+        }
+        #save-pdf {
+            background-color: #4CAF50;
+            color: white; 
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            
+        }
 
         .container {
             max-width: 1200px;
@@ -258,7 +275,10 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="save-pdf-container">
+        <button id="save-pdf">Download as Pdf</button>
+    </div>
+    <div id="conference-agenda" class="container">
         <header>
             <div class="logo-placeholder">
                 <img src="assets/logo2.png" alt="REEEA-A Logo" class="logo" />
@@ -293,7 +313,7 @@
         </header>
 
         <!-- DAY ONE -->
-        <!-- <div class="day-section">
+        <div class="day-section">
             <div class="day-header">
                 <i class="fas fa-calendar-day"></i> DAY ONE – TUESDAY, SEPTEMBER 23
                 <br><small>Policy, Regulation & Government Direction</small>
@@ -508,7 +528,7 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <!-- DAY TWO -->
         <div class="day-section">
@@ -794,6 +814,35 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.2/jspdf.umd.min.js"></script>
+    <script>
+        // Example: Generate PDF on button click
+        document.addEventListener("DOMContentLoaded", function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
 
+            document.getElementById("save-pdf").addEventListener("click", function() {
+                console.log("Generating PDF...");
+
+                // doc.html(document.getElementById("conference-agenda"), {
+                //     callback: function (pdfDoc) {
+                //         console.log("PDF generated.", pdfDoc);
+                //         pdfDoc.save('REEEA-A_Conference_Agenda_2025.pdf');
+                //     },
+                //     x: 10,
+                //     y: 10
+                // });
+                html2canvas(document.getElementById("conference-agenda")).then(canvas => {
+                    const imgData = canvas.toDataURL("image/png");
+                    const pdf = new jsPDF("p", "pt", [canvas.width, canvas.height]);
+                    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+                    pdf.save("agenda.pdf");
+                });
+                console.log("PDF generation initiated.");
+               
+            })
+        });
+    </script>
 </body>
 </html>
